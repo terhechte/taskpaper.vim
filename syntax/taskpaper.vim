@@ -25,6 +25,7 @@ syn match  taskpaperListItem  "^\s*[-+]\s\+"
 syn match  taskpaperContext  "@[A-Za-z0-9_]\+"
 syn match  taskpaperDone "^\s*[-+]\s\+.*@[Dd]one.*$"
 syn match  taskpaperCancelled "^\s*[-+]\s\+.*@[Cc]ancelled.*$"
+syn match  taskpaperTesting "^\s*[-+]\s\+.*@[Tt]esting.*$"
 
 syn region taskpaperProjectFold start=/^.\+:\s*$/ end=/^\s*$/ transparent fold
 
@@ -37,6 +38,7 @@ HiLink taskpaperProject       Title
 HiLink taskpaperDone          NonText
 HiLink taskpaperCancelled     NonText
 HiLink taskpaperComment       Comment
+HiLink taskpaperTesting       Function
 
 let b:current_syntax = "taskpaper"
 

@@ -56,9 +56,14 @@ function! s:ToggleDone()
             let repl = substitute(line, "@done\(.*\)", "", "g")
             echo "undone!"
         else
+            " We need to remove the testing flag when flagging as done
+            let repl = line
+            if (line =~ '@testing')
+                let repl = substitute(line, "@testing\(.*\)", "", "g")
+            endif
             let today = strftime(g:task_paper_date_format, localtime())
             let done_str = " @done(" . today . ")"
-            let repl = substitute(line, "$", done_str, "g")
+            let repl = substitute(repl, "$", done_str, "g")
             echo "done!"
         endif
         call setline(".", repl)
@@ -90,15 +95,39 @@ function! s:ToggleCancelled()
 
 endfunction
 
+" toggle @testing context tag on a task
+function! s:ToggleTesting()
+
+    let line = getline(".")
+    if (line =~ '^\s*- ')
+        let repl = line
+        if (line =~ '@testing')
+            let repl = substitute(line, "@testing\(.*\)", "", "g")
+            echo "untesting!"
+        else
+            let today = strftime(g:task_paper_date_format, localtime())
+            let testing_str = " @testing(" . today . ")"
+            let repl = substitute(line, "$", testing_str, "g")
+            echo "testing!"
+        endif
+        call setline(".", repl)
+    else 
+        echo "not a task."
+    endif
+
+endfunction
+
 " Set up mappings
 noremap <unique> <script> <Plug>ToggleDone       :call <SID>ToggleDone()<CR>
 noremap <unique> <script> <Plug>ToggleCancelled   :call <SID>ToggleCancelled()<CR>
+noremap <unique> <script> <Plug>ToggleTesting    :call <SID>ToggleTesting()<CR>
 noremap <unique> <script> <Plug>ShowContext      :call <SID>ShowContext()<CR>
 noremap <unique> <script> <Plug>ShowAll          :call <SID>ShowAll()<CR>
 noremap <unique> <script> <Plug>FoldAllProjects  :call <SID>FoldAllProjects()<CR>
 
 map <buffer> <silent> <Leader>td <Plug>ToggleDone
 map <buffer> <silent> <Leader>tx <Plug>ToggleCancelled
+map <buffer> <silent> <Leader>tt <Plug>ToggleTesting
 map <buffer> <silent> <Leader>tc <Plug>ShowContext
 map <buffer> <silent> <Leader>ta <Plug>ShowAll
 map <buffer> <silent> <Leader>tp <Plug>FoldAllProjects

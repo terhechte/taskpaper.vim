@@ -76,6 +76,7 @@ The plugin defines some new mappings:
 
     \td     Mark task as done
     \tx     Mark task as cancelled
+    \tt     Mark task as testing / has to be tested
     \tc     Show all tasks with context under cursor
     \tp     Fold all projects
     \ta     Show all projects and tasks
